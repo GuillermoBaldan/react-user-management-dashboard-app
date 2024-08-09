@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react-user-management-dashboard-app/static/css/main.e6c13ad2.css",
+    "main.js": "/react-user-management-dashboard-app/static/js/main.7c461574.js",
+    "index.html": "/react-user-management-dashboard-app/index.html",
+    "main.e6c13ad2.css.map": "/react-user-management-dashboard-app/static/css/main.e6c13ad2.css.map",
+    "main.7c461574.js.map": "/react-user-management-dashboard-app/static/js/main.7c461574.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.7c461574.js"
+  ]
+}
