@@ -1,47 +1,35 @@
-// src/components/UserForm.js
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+// UserForm.js
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const UserForm = () => {
+const UserForm = ({ onAddUser }) => {
+  console.log('onAddUser:', onAddUser); 
   const [user, setUser] = useState({ name: '', email: '', username: '' });
-  const { id } = useParams();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (id) {
-      fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
-        .then(response => response.json())
-        .then(data => setUser(data));
-    }
-  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (id) {
-      // Actualizar un usuario existente
-      fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user),
-      }).then(() => navigate('/'));
-    } else {
-      // Agregar un nuevo usuario
-      fetch('https://jsonplaceholder.typicode.com/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user),
-      }).then(() => navigate('/'));
+    const response = await fetch('https://jsonplaceholder.typicode.com/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
+    });
+
+    if (response.ok) {
+      const newUser = await response.json();
+      onAddUser(newUser);  // Llama a la función pasada como prop
+      navigate('/');  // Navega de vuelta a la lista de usuarios
     }
   };
 
   return (
     <div>
-      <h1>{id ? 'Edit User' : 'Add User'}</h1>
+      <h1>Add User</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name:</label>
@@ -55,7 +43,7 @@ const UserForm = () => {
           <label>Username:</label>
           <input type="text" name="username" value={user.username} onChange={handleChange} required />
         </div>
-        <button type="submit">{id ? 'Update User' : 'Add User'}</button>
+        <button type="submit">Add User</button>
       </form>
     </div>
   );
